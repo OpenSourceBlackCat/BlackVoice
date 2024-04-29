@@ -14,30 +14,32 @@ BlackClient.on(Events.ClientReady, async(ctx)=>{
     .setName("bark").setDescription("For Black Voice!")
     .addStringOption(option=>option.setName("text").setDescription("Message To Bark!").setRequired(true)),
     async execute(ctx){
-        let userText;
-        if(CurrentSpeaker!=ctx.member.id){
-            CurrentSpeaker = ctx.member.id;
-            userText = `${ctx.member.nickname?ctx.member.nickname:ctx.member.user.globalName} says ${ctx.options.getString("text")}`;
-        }else{
-            userText = `${ctx.options.getString("text")}`;
-        }
-        if(ctx.member.voice){
-            if(!BlackClient.user.voice){
-                const BlackVoiceConnection = await joinVoiceChannel({
-                    channelId: ctx.member.voice.channel.id,
-                    guildId: process.env.GUILD,
-                    adapterCreator: ctx.guild.voiceAdapterCreator,
-                    selfDeaf:false,
-                    selfMute:false
-                });
-                BlackVoiceConnection.subscribe(BlackPlayer);
-                const VoiceGenerate = new gTTS(userText, "hi");
-                await VoiceGenerate.save("./BlackVoice.mp3", async()=>{
-                    await BlackPlayer.play(createAudioResource("./BlackVoice.mp3"));
-                });
+        try{
+            let userText;
+            if(CurrentSpeaker!=ctx.member.id){
+                CurrentSpeaker = ctx.member.id;
+                userText = `${ctx.member.nickname?ctx.member.nickname:ctx.member.user.globalName} says ${ctx.options.getString("text")}`;
+            }else{
+                userText = `${ctx.options.getString("text")}`;
             }
-        }
-        await ctx.deleteReply();
+            if(ctx.member.voice){
+                if(!BlackClient.user.voice){
+                    const BlackVoiceConnection = await joinVoiceChannel({
+                        channelId: ctx.member.voice.channel.id,
+                        guildId: process.env.GUILD,
+                        adapterCreator: ctx.guild.voiceAdapterCreator,
+                        selfDeaf:false,
+                        selfMute:false
+                    });
+                    BlackVoiceConnection.subscribe(BlackPlayer);
+                    const VoiceGenerate = new gTTS(userText, "hi");
+                    await VoiceGenerate.save("./BlackVoice.mp3", async()=>{
+                        await BlackPlayer.play(createAudioResource("./BlackVoice.mp3"));
+                    });
+                }
+            }
+            await ctx.deleteReply();
+        }catch{};
     }}];
     for(let BlackCommand of BlackCommands){
         await AllSlashCommands.set(BlackCommand.slashCommand.name, BlackCommand);
