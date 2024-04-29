@@ -1,0 +1,28 @@
+{
+  "name": "blackvoice",
+  "version": "1.0.0",
+  "description": "Voice Of BlackCat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenSourceBlackCat/BlackVoice.git"
+  },
+  "keywords": [
+    "blackvoice"
+  ],
+  "author": "AmeyaGurjar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OpenSourceBlackCat/BlackVoice/issues"
+  },
+  "homepage": "https://github.com/OpenSourceBlackCat/BlackVoice#readme",
+  "dependencies": {
+    "@discordjs/voice": "^0.16.1",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "gtts": "^0.2.1"
+  }
+}
